@@ -1,26 +1,36 @@
-def fenzu(lis):
-    n = len(lis)
-    mid = n // 2
-    lis1 = lis[:mid]
-    lis2 = lis[mid:]
-    return merge(lis1, lis2)
-
-def merge(lis1, lis2):
-    new_lis = []
-    l, r = 0, 0
-    n1 = len(lis1)
-    n2 = len(lis2)
-    while l < n1 and r < n2:
-        if lis1[l] < lis2[r]:
-            new_lis.append(lis1[l])
-            l += 1
+def searchRange_2(nums, target):
+    # 二分法解法:左边右边分开找
+    left_border = -1
+    right_border = -1
+    
+    l, r = 0, len(nums)-1
+    if r == -1:
+        return [-1,-1]
+    
+    # 找左边
+    while l < r:
+        mid = l + (r - l) // 2
+        if target > nums[mid]:
+            l = mid + 1
+        elif target < nums[mid]:
+            r = mid - 1
         else:
-            new_lis.append(lis2[r])
-            r += 1
-    new_lis.extend(lis1[l:])
-    new_lis.extend(lis2[r:])
-    return new_lis
+            left_border = mid
+            r = mid - 1
+    
+    # 找右边
+    l, r = 0, len(nums)-1
+    while l < r:
+        mid = l + (r - l) // 2
+        if target > nums[mid]:
+            l = mid + 1
+        elif target < nums[mid]:
+            r = mid - 1
+        else:
+            right_border = mid
+            l = mid + 1
 
-lis = [9,3,2,4,5,5,5]
-fenzu(lis)
-lis
+    return [left_border, right_border]
+
+
+searchRange_2([1,2,2,2,3], 2)
